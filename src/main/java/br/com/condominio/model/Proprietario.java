@@ -1,5 +1,7 @@
 package br.com.condominio.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -25,61 +28,64 @@ public class Proprietario implements Entidade{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "in_codi")
+	@Column(name = "pr_codi")
 	private Long id;
 
+//	@OneToMany(mappedBy = "prop")
+//	private Set<Condominio> condominio;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name = "in_tipo", nullable = false)
+	@Column(name = "pr_tipo", nullable = false)
 	private TipoPessoaEnum tipoPessoa;
 	
 	@CPF
-	@Column(name = "in_cpf")
+	@Column(name = "pr_cpf")
 	private String cpf;
 	
 	@CNPJ
-	@Column(name = "in_cnpj")
+	@Column(name = "pr_cnpj")
 	private String cnpj;
 	
 	@NotEmpty
-	@Column(name = "in_nome", nullable = false)
+	@Column(name = "pr_nome", nullable = false)
 	private String nome;
 	
 	@NotEmpty
-	@Column(name = "in_endereco")
+	@Column(name = "pr_endereco")
 	private String endereco;
 	
 	@NotEmpty
-	@Column(name = "in_numero")
+	@Column(name = "pr_numero")
 	private String numero;
 	
 	@NotEmpty
-	@Column(name = "in_cidade")
+	@Column(name = "pr_cidade")
 	private String cidade;
 	
 	@NotEmpty
-	@Column(name = "in_bairro")
+	@Column(name = "pr_bairro")
 	private String bairro;
 	
 	@NotEmpty
-	@Column(name = "in_uf")
+	@Column(name = "pr_uf")
 	private String uf;
 	
 	@NotEmpty
-	@Column(name = "in_cep")
+	@Column(name = "pr_cep")
 	private String cep;	
 	
 	@NotEmpty
-	@Column(name = "in_fone")
+	@Column(name = "pr_fone")
 	private String fone;
 	
 	@NotEmpty
 	@Email
-	@Column(name = "in_email")
+	@Column(name = "pr_email")
 	private String email;
 	
 	@NotEmpty
-	@Column(name = "in_observacoes")
+	@Column(name = "pr_observacoes")
 	private String observacoes;
 	
 	public Proprietario() {}
