@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="WEB-INF/templates/Layout.xhtml">
+        <ui:define name="content">
+            <h1 class="aw-page-title">Inquilinos</h1>
+
+            <f:metadata>
+                <f:viewAction action="#{inquilinoController.consultar}" />
+            </f:metadata>
+
+            <h:form id="form">
+            <p:messages id="msgs"/>
+                <p:toolbar id="toolbar">
+                    <f:facet name="left">
+                        <p:commandButton value="Novo" icon="ui-icon-document"
+                            action="#{inquilinoController.preparaNovoInquilino}"
+                            process="@this" update="dialog-inquilino"
+                            oncomplete="PF('inquilinoDialog').show()">
+                            <p:resetInput target="dialog-inquilino" />
+                        </p:commandButton>
+
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+
+                        <p:commandButton icon="ui-icon-pencil" disabled="#{inquilinoController.inquilinoSelecionado == null}"
+                                process="@this" id="editar-button" update="dialog-inquilino" oncomplete="PF('inquilinoDialog').show()">
+                            <f:setPropertyActionListener value="#{inquilinoController.inquilinoSelecionado}" 
+                            target="#{inquilinoController.inquilinoEdicao}" />
+                        </p:commandButton>
+                        <p:tooltip for="editar-button" value="Editar inquilino" />
+
+                        <p:commandButton icon="ui-icon-trash" disabled="#{inquilinoController.inquilinoSelecionado == null}"
+                                process="@this" update="inquilinos-table msgs" id="excluir-button"
+                                action="#{inquilinoController.excluir}">
+                        </p:commandButton>
+                        <p:tooltip for="excluir-button" value="Excluir inquilino" />
+                    </f:facet>
+                </p:toolbar>
+
+                <p:dataTable value="#{inquilinoController.inquilinoList}" var="inquilino" emptyMessage="Nenhum inquilino cadastrado."
+                        rows="10" paginator="true" paginatorPosition="bottom" style="margin-top: 10px" reflow="true"
+                        id="inquilinos-table" selection="#{inquilinoController.inquilinoSelecionado}" selectionMode="single" rowKey="#{inquilino.id}">
+
+                    <p:ajax event="rowSelect" update=":form:toolbar" />
+                    <p:ajax event="rowUnselect" update=":form:toolbar" />
+
+                    <p:column headerText="Nome/Razão Social" sortBy="#{inquilino.nome}">
+                        <h:outputText value="#{inquilino.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="CPF/CNPJ" width="250">
+                        <h:outputText value="#{inquilino.identificador}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo Inquilino" width="160">
+                        <h:outputText value="#{inquilino.tipoPessoa.descricao}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog header="Novo inquilino" widgetVar="inquilinoDialog" id="dialog-inquilino" resizable="false"
+                        modal="true" closeOnEscape="true" responsive="true" minWidth="350" >
+
+                    <p:scrollPanel mode="native"  style="max-height:450px; border: none;">
+
+                        <h:panelGroup id="inquilinoPanel" layout="block" styleClass="ui-fluid">
+                            <p:messages id="dialog-msg" closable="true"/>
+
+                            <!--<p:defaultCommand target="salvar-button" />-->
+
+                            <p:panelGrid columns="4" id="panel-dialog" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
+
+                                <p:outputLabel value="Tipo" for="tipoPessoa"/>
+
+                                <p:selectOneMenu id="tipoPessoa" value="#{inquilinoController.inquilinoEdicao.tipoPessoa}">
+                                    <f:selectItems value="#{inquilinoController.tiposPessoa()}" var="tipoPessoa" itemLabel="#{tipoPessoa.descricao}" itemValue="${tipoPessoa}"  />
+                                    <p:ajax event="change" update="inquilinoPanel" process="@this"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Nome" for="nome" />
+                                <p:inputText id="nome" value="#{inquilinoController.inquilinoEdicao.nome}" size="50"/>
+
+                                <p:outputLabel value="CPF" for="cpf" rendered="#{inquilinoController.inquilinoEdicao.tipoPessoa == 'PF'}"/>
+                                <p:outputLabel value="CNPJ" for="cnpj" rendered="#{inquilinoController.inquilinoEdicao.tipoPessoa == 'PJ'}"/>
+                                <p:inputMask mask="999.999.999-99" id="cpf" rendered="#{inquilinoController.inquilinoEdicao.tipoPessoa == 'PF'}" value="#{inquilinoController.inquilinoEdicao.cpf}"/>
+                                <p:inputMask mask="99.999.999/9999-99" id="cnpj" rendered="#{inquilinoController.inquilinoEdicao.tipoPessoa == 'PJ'}" value="#{inquilinoController.inquilinoEdicao.cnpj}"/>
+
+                                <p:outputLabel value="Observações" for="observacoes" />
+                                <p:inputTextarea value="#{inquilinoController.inquilinoEdicao.observacoes}" id="observacoes" />
+                                
+                                <p:outputLabel value="Telefone" for="telefone"/>
+                                <p:inputMask mask="(99) 99999-9999" id="telefone" value="#{inquilinoController.inquilinoEdicao.fone}" />
+                                
+                                <p:outputLabel value="E-mail" for="email" />
+                                <p:inputText id="email" value="#{inquilinoController.inquilinoEdicao.email}" maxlength="255"/>
+                            </p:panelGrid>
+
+                            <h:outputText value="Endereço" style="font-weight: bold"/>
+                            <p:separator title="Endereço"/>
+
+                            <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
+                                <p:outputLabel value="CEP" for="cep"/>
+                                <p:inputMask mask="99999-999" id="cep" value="#{inquilinoController.inquilinoEdicao.cep}" />
+
+                                <p:outputLabel value="Logradouro" for="logradouro"/>
+                                <p:inputText id="logradouro" value="#{inquilinoController.inquilinoEdicao.endereco}" />
+
+                                <p:outputLabel value="Número" for="numero"/>
+                                <p:inputText id="numero" value="#{inquilinoController.inquilinoEdicao.numero}" />
+
+                                <p:outputLabel value="Cidade" for="cidade"/>
+                                <p:inputText id="cidade" value="#{inquilinoController.inquilinoEdicao.cidade}" />
+
+                                <p:outputLabel value="Bairro" for="bairro"/>
+                                <p:inputText id="bairro" value="#{inquilinoController.inquilinoEdicao.bairro}" />
+
+                                <p:outputLabel value="Estado" for="uf"/>
+                                <p:inputText id="uf" value="#{inquilinoController.inquilinoEdicao.uf}" maxlength="2"/>
+								
+                            </p:panelGrid>
+                            
+                            <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder">
+                            	<p:commandButton value="Salvar Inquilino"
+								action="#{inquilinoController.save}"
+								process="inquilinoPanel" update="inquilinoPanel inquilinos-table msgs"
+								oncomplete="if (!args.validationFailed) PF('inquilinoDialog').hide()" />
+                            </p:panelGrid>
+                        </h:panelGroup>
+                    </p:scrollPanel>
+                </p:dialog>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

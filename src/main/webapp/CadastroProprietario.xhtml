@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="WEB-INF/templates/Layout.xhtml">
+        <ui:define name="content">
+            <h1 class="aw-page-title">Proprietarios</h1>
+
+            <f:metadata>
+                <f:viewAction action="#{proprietarioController.consultar}" />
+            </f:metadata>
+
+            <h:form id="form">
+            <p:messages id="msgs"/>
+                <p:toolbar id="toolbar">
+                    <f:facet name="left">
+                        <p:commandButton value="Novo" icon="ui-icon-document"
+                            action="#{proprietarioController.preparaNovoProprietario}"
+                            process="@this" update="dialog-proprietario"
+                            oncomplete="PF('proprietarioDialog').show()">
+                            <p:resetInput target="dialog-proprietario" />
+                        </p:commandButton>
+
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+
+                        <p:commandButton icon="ui-icon-pencil" disabled="#{proprietarioController.proprietarioSelecionado == null}"
+                                process="@this" id="editar-button" update="dialog-proprietario" oncomplete="PF('proprietarioDialog').show()">
+                            <f:setPropertyActionListener value="#{proprietarioController.proprietarioSelecionado}" 
+                            target="#{proprietarioController.proprietarioEdicao}" />
+                        </p:commandButton>
+                        <p:tooltip for="editar-button" value="Editar proprietario" />
+
+                        <p:commandButton icon="ui-icon-trash" disabled="#{proprietarioController.proprietarioSelecionado == null}"
+                                process="@this" update="proprietarios-table msgs" id="excluir-button"
+                                action="#{proprietarioController.excluir}">
+                        </p:commandButton>
+                        <p:tooltip for="excluir-button" value="Excluir proprietario" />
+                    </f:facet>
+                </p:toolbar>
+
+                <p:dataTable value="#{proprietarioController.proprietarioList}" var="proprietario" emptyMessage="Nenhum proprietario cadastrado."
+                        rows="10" paginator="true" paginatorPosition="bottom" style="margin-top: 10px" reflow="true"
+                        id="proprietarios-table" selection="#{proprietarioController.proprietarioSelecionado}" selectionMode="single" rowKey="#{proprietario.id}">
+
+                    <p:ajax event="rowSelect" update=":form:toolbar" />
+                    <p:ajax event="rowUnselect" update=":form:toolbar" />
+
+                    <p:column headerText="Nome/Razão Social" sortBy="#{proprietario.nome}">
+                        <h:outputText value="#{proprietario.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="CPF/CNPJ" width="250">
+                        <h:outputText value="#{proprietario.identificador}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo Proprietario" width="160">
+                        <h:outputText value="#{proprietario.tipoPessoa.descricao}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog header="Novo proprietario" widgetVar="proprietarioDialog" id="dialog-proprietario" resizable="false"
+                        modal="true" closeOnEscape="true" responsive="true" minWidth="350" >
+
+                    <p:scrollPanel mode="native"  style="max-height:450px; border: none;">
+
+                        <h:panelGroup id="proprietarioPanel" layout="block" styleClass="ui-fluid">
+                            <p:messages id="dialog-msg" closable="true"/>
+
+                            <!--<p:defaultCommand target="salvar-button" />-->
+
+                            <p:panelGrid columns="4" id="panel-dialog" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
+
+                                <p:outputLabel value="Tipo" for="tipoPessoa"/>
+
+                                <p:selectOneMenu id="tipoPessoa" value="#{proprietarioController.proprietarioEdicao.tipoPessoa}">
+                                    <f:selectItems value="#{proprietarioController.tiposPessoa()}" var="tipoPessoa" itemLabel="#{tipoPessoa.descricao}" itemValue="${tipoPessoa}"  />
+                                    <p:ajax event="change" update="proprietarioPanel" process="@this"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Nome" for="nome" />
+                                <p:inputText id="nome" value="#{proprietarioController.proprietarioEdicao.nome}" size="50"/>
+
+                                <p:outputLabel value="CPF" for="cpf" rendered="#{proprietarioController.proprietarioEdicao.tipoPessoa == 'PF'}"/>
+                                <p:outputLabel value="CNPJ" for="cnpj" rendered="#{proprietarioController.proprietarioEdicao.tipoPessoa == 'PJ'}"/>
+                                <p:inputMask mask="999.999.999-99" id="cpf" rendered="#{proprietarioController.proprietarioEdicao.tipoPessoa == 'PF'}" value="#{proprietarioController.proprietarioEdicao.cpf}"/>
+                                <p:inputMask mask="99.999.999/9999-99" id="cnpj" rendered="#{proprietarioController.proprietarioEdicao.tipoPessoa == 'PJ'}" value="#{proprietarioController.proprietarioEdicao.cnpj}"/>
+
+                                <p:outputLabel value="Observações" for="observacoes" />
+                                <p:inputTextarea value="#{proprietarioController.proprietarioEdicao.observacoes}" id="observacoes" />
+                                
+                                <p:outputLabel value="Telefone" for="telefone"/>
+                                <p:inputMask mask="(99) 99999-9999" id="telefone" value="#{proprietarioController.proprietarioEdicao.fone}" />
+                                
+                                <p:outputLabel value="E-mail" for="email" />
+                                <p:inputText id="email" value="#{proprietarioController.proprietarioEdicao.email}" maxlength="255"/>
+                            </p:panelGrid>
+
+                            <h:outputText value="Endereço" style="font-weight: bold"/>
+                            <p:separator title="Endereço"/>
+
+                            <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
+                                <p:outputLabel value="CEP" for="cep"/>
+                                <p:inputMask mask="99999-999" id="cep" value="#{proprietarioController.proprietarioEdicao.cep}" />
+
+                                <p:outputLabel value="Logradouro" for="logradouro"/>
+                                <p:inputText id="logradouro" value="#{proprietarioController.proprietarioEdicao.endereco}" />
+
+                                <p:outputLabel value="Número" for="numero"/>
+                                <p:inputText id="numero" value="#{proprietarioController.proprietarioEdicao.numero}" />
+
+                                <p:outputLabel value="Cidade" for="cidade"/>
+                                <p:inputText id="cidade" value="#{proprietarioController.proprietarioEdicao.cidade}" />
+
+                                <p:outputLabel value="Bairro" for="bairro"/>
+                                <p:inputText id="bairro" value="#{proprietarioController.proprietarioEdicao.bairro}" />
+
+                                <p:outputLabel value="Estado" for="uf"/>
+                                <p:inputText id="uf" value="#{proprietarioController.proprietarioEdicao.uf}" maxlength="2"/>
+								
+                            </p:panelGrid>
+                            
+                            <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder">
+                            	<p:commandButton value="Salvar Proprietario"
+								action="#{proprietarioController.save}"
+								process="proprietarioPanel" update="proprietarioPanel proprietarios-table msgs"
+								oncomplete="if (!args.validationFailed) PF('proprietarioDialog').hide()" />
+                            </p:panelGrid>
+                        </h:panelGroup>
+                    </p:scrollPanel>
+                </p:dialog>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
