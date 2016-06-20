@@ -2,11 +2,12 @@ package br.com.condominio.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -59,9 +60,9 @@ public class Condominio implements Entidade{
 	@Column(name = "cd_fone")
 	private String fone;	
 	
-//	@OneToOne
-//	@JoinColumn(name ="pr_id")
-//	private Proprietario proprietario;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_proprietario")
+	private Proprietario proprietario;
 	
 	public Condominio() {}
 
