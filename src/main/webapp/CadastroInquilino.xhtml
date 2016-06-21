@@ -98,31 +98,7 @@
                                 
                                 <p:outputLabel value="E-mail" for="email" />
                                 <p:inputText id="email" value="#{inquilinoController.inquilinoEdicao.email}" maxlength="255"/>
-                            </p:panelGrid>
-
-                            <h:outputText value="Endereço" style="font-weight: bold"/>
-                            <p:separator title="Endereço"/>
-
-                            <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
-                                <p:outputLabel value="CEP" for="cep"/>
-                                <p:inputMask mask="99999-999" id="cep" value="#{inquilinoController.inquilinoEdicao.cep}" />
-
-                                <p:outputLabel value="Logradouro" for="logradouro"/>
-                                <p:inputText id="logradouro" value="#{inquilinoController.inquilinoEdicao.endereco}" />
-
-                                <p:outputLabel value="Número" for="numero"/>
-                                <p:inputText id="numero" value="#{inquilinoController.inquilinoEdicao.numero}" />
-
-                                <p:outputLabel value="Cidade" for="cidade"/>
-                                <p:inputText id="cidade" value="#{inquilinoController.inquilinoEdicao.cidade}" />
-
-                                <p:outputLabel value="Bairro" for="bairro"/>
-                                <p:inputText id="bairro" value="#{inquilinoController.inquilinoEdicao.bairro}" />
-
-                                <p:outputLabel value="Estado" for="uf"/>
-                                <p:inputText id="uf" value="#{inquilinoController.inquilinoEdicao.uf}" maxlength="2"/>
-								
-                            </p:panelGrid>
+                            </p:panelGrid>                           
                             
                             <p:panelGrid columns="4" layout="grid" styleClass="panelgrid-noborder">
                             	<p:commandButton value="Salvar Inquilino"

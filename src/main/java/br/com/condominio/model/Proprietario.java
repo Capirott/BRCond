@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import br.com.condominio.enums.TipoPessoaEnum;
 
 @Entity
-@Table(name = "COND_PROPRIETARIO")
+@Table(name = "PROPRIETARIO")
 public class Proprietario implements Entidade{
 	
 	private static final long serialVersionUID = 1L;
@@ -34,6 +34,9 @@ public class Proprietario implements Entidade{
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
 	private Set<Condominio> condominios;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
+	private Set<Apartamento> apartamentos;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -85,7 +88,6 @@ public class Proprietario implements Entidade{
 	@Column(name = "pr_email")
 	private String email;
 	
-	@NotEmpty
 	@Column(name = "pr_observacoes")
 	private String observacoes;
 	

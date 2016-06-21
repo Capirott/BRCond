@@ -4,9 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +21,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import br.com.condominio.enums.TipoPessoaEnum;
 
 @Entity
-@Table(name = "COND_INQUILINO")
+@Table(name = "INQUILINO")
 public class Inquilino implements Entidade{
 	
 	private static final long serialVersionUID = 1L;
@@ -28,6 +31,10 @@ public class Inquilino implements Entidade{
 	@Column(name = "in_codi")
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ap_id")
+	private Apartamento apartamento;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "in_tipo", nullable = false)
@@ -44,30 +51,7 @@ public class Inquilino implements Entidade{
 	@NotEmpty
 	@Column(name = "in_nome", nullable = false)
 	private String nome;
-	
-	@NotEmpty
-	@Column(name = "in_endereco")
-	private String endereco;
-	
-	@NotEmpty
-	@Column(name = "in_numero")
-	private String numero;
-	
-	@NotEmpty
-	@Column(name = "in_cidade")
-	private String cidade;
-	
-	@NotEmpty
-	@Column(name = "in_bairro")
-	private String bairro;
-	
-	@NotEmpty
-	@Column(name = "in_uf")
-	private String uf;
-	
-	@NotEmpty
-	@Column(name = "in_cep")
-	private String cep;	
+			
 	
 	@NotEmpty
 	@Column(name = "in_fone")
@@ -78,7 +62,6 @@ public class Inquilino implements Entidade{
 	@Column(name = "in_email")
 	private String email;
 	
-	@NotEmpty
 	@Column(name = "in_observacoes")
 	private String observacoes;
 	
@@ -125,54 +108,7 @@ public class Inquilino implements Entidade{
 		this.nome = nome;
 	}
 
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
+	
 	public String getFone() {
 		return fone;
 	}

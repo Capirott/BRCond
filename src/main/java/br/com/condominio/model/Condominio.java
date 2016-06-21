@@ -1,5 +1,7 @@
 package br.com.condominio.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -60,9 +63,15 @@ public class Condominio implements Entidade{
 	@Column(name = "cd_fone")
 	private String fone;	
 	
+	@NotEmpty
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_proprietario")
+	@JoinColumn(name = "pr_codi")
 	private Proprietario proprietario;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condominio")
+	private Set<Apartamento> apartamentos;
+	
+	
 	
 	public Condominio() {}
 
