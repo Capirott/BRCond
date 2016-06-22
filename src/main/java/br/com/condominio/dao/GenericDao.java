@@ -37,9 +37,4 @@ public abstract class GenericDao implements Serializable{
 		bean = (T) consultar(bean.getClass(), bean.getId());
 		manager.remove(bean);
 	}
-
-	protected EntityManager getManager() {
-		return manager;
-	}	
-
 }

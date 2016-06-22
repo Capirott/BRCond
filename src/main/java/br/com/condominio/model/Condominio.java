@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CNPJ;
 
@@ -63,15 +65,13 @@ public class Condominio implements Entidade{
 	@Column(name = "cd_fone")
 	private String fone;	
 	
-	@NotEmpty
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pr_codi")
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pr_codi", nullable = false)
 	private Proprietario proprietario;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condominio")
 	private Set<Apartamento> apartamentos;
-	
-	
 	
 	public Condominio() {}
 
@@ -152,6 +152,22 @@ public class Condominio implements Entidade{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Proprietario getProprietario() {
+		return proprietario;
+	}
+
+	public void setProprietario(Proprietario proprietario) {
+		this.proprietario = proprietario;
+	}
+
+	public Set<Apartamento> getApartamentos() {
+		return apartamentos;
+	}
+
+	public void setApartamentos(Set<Apartamento> apartamentos) {
+		this.apartamentos = apartamentos;
 	}
 
 }

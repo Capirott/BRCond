@@ -1,7 +1,5 @@
 package br.com.condominio.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,21 +19,40 @@ public class Apartamento implements Entidade {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ap_codi")
 	private Long id;
 	
 	@NotNull
+	@Column(name = "ap_num")
+	private Long numero;
+	
+	@NotNull
 	@Column(name = "ap_andar")
 	private Long andar;
 
+	public Long getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
+	public Inquilino getInquilino() {
+		return inquilino;
+	}
+
+	public void setInquilino(Inquilino inquilino) {
+		this.inquilino = inquilino;
+	}
 	@Column(name = "ap_observacoes")
 	private String observacoes;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "apartamento")
-	private Set<Inquilino> inquilinos;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "in_codi")
+	private Inquilino inquilino;
 
 	@NotEmpty
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +60,7 @@ public class Apartamento implements Entidade {
 	private Proprietario proprietario;
 
 	@NotEmpty
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cd_codi")
 	private Condominio condominio;
 
@@ -67,13 +83,6 @@ public class Apartamento implements Entidade {
 		this.observacoes = observacoes;
 	}
 
-	public Set<Inquilino> getInquilinos() {
-		return inquilinos;
-	}
-
-	public void setInquilinos(Set<Inquilino> inquilinos) {
-		this.inquilinos = inquilinos;
-	}
 
 	public Proprietario getProprietario() {
 		return proprietario;

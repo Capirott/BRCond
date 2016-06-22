@@ -85,8 +85,9 @@
 
     								
                              	<p:outputLabel value ="Proprietario" for ="proprietario" /> 
-                             	<p:autoComplete id="proprietario" value="#{proprietario}" size="30"
-                            	completeMethod="#{proprietarioController.completarCliente}" var="c" itemLabel="#{c.nome}" itemValue="#{c}" forceSelection="true"/> 
+                             	<p:autoComplete id="proprietario" value="#{condominioController.condominioEdicao.proprietario}" size="30" completeMethod="#{proprietarioController.completarProprietario}" 
+                             	           var="c" itemLabel="#{c.nome}" itemValue="#{c}" forceSelection="true"
+                             	           converter="#{proprietarioConverter}"/> 
 							
                             </p:panelGrid>
 						
