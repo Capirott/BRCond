@@ -12,8 +12,8 @@ import org.primefaces.context.RequestContext;
 
 import br.com.condominio.enums.TipoPessoaEnum;
 import br.com.condominio.model.Inquilino;
+import br.com.condominio.service.InquilinoService;
 import br.com.condominio.util.FacesMessages;
-import br.com.condomino.service.InquilinoService;
 
 @Named
 @ViewScoped

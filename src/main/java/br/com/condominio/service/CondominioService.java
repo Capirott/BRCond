@@ -1,4 +1,4 @@
-package br.com.condomino.service;
+package br.com.condominio.service;
 
 import java.io.Serializable;
 import java.util.List;

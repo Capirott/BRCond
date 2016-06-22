@@ -1,4 +1,4 @@
-package br.com.condomino.service;
+package br.com.condominio.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,6 +9,11 @@ import br.com.condominio.dao.ProprietarioDAO;
 import br.com.condominio.model.Proprietario;
 import br.com.condominio.util.Transacional;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean(name="proprietarioService", eager = true)
+@ApplicationScoped
 public class ProprietarioService implements Serializable {
 
 	private static final long serialVersionUID = 1L;

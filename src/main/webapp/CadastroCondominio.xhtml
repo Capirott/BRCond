@@ -73,17 +73,29 @@
                             <p:panelGrid columns="4" id="panel-dialog" layout="grid" styleClass="panelgrid-noborder" columnClasses="ui-grid-col-1, ui-grid-col-4, ui-grid-col-2, ui-grid-col-5">
 
                                 
-                                <p:outputLabel value="Nome" for="nome" />
+                                <p:outputLabel value="Nome Cond." for="nome" />
                                 <p:inputText id="nome" value="#{condominioController.condominioEdicao.nome}" size="50"/>
 
-                                <p:outputLabel value="CNPJ" for="cnpj"/>
+                                <p:outputLabel value="CNPJ Cond." for="cnpj"/>
                                 <p:inputMask mask="99.999.999/9999-99" id="cnpj" value="#{condominioController.condominioEdicao.cnpj}"/>
                             
                                 <p:outputLabel value="Telefone" for="telefone"/>
-                                <p:inputMask mask="(99) 99999-9999" id="telefone" value="#{condominioController.condominioEdicao.fone}" />
-                                
-                            </p:panelGrid>
+                                <p:inputMask mask="(99)9999-9999" id="telefone" value="#{condominioController.condominioEdicao.fone}" />
 
+    								
+                                <p:outputLabel value="Proprietario" for="itemTip" />
+						        <p:autoComplete id="itemTip" value="#{autoCompleteView.proprietario3}" completeMethod="#{autoCompleteView.completeProprietario}"
+						                        var="proprietario" itemLabel="#{proprietario.nome}" itemValue="#{proprietario}" converter="proprietarioConverter" forceSelection="true">
+						            <f:facet name="itemtip">
+						                <h:panelGrid columns="1" cellpadding="15">
+						                    <h:outputText value="CNPJ:" />
+						                    <h:outputText value="#{proprietario.cnpj}" />
+						                </h:panelGrid>
+						            </f:facet>
+						        </p:autoComplete>							        
+							
+                            </p:panelGrid>
+						
                             <h:outputText value="Endereço" style="font-weight: bold"/>
                             <p:separator title="Endereço"/>
 

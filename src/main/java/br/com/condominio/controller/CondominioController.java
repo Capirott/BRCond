@@ -10,8 +10,8 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 import br.com.condominio.model.Condominio;
+import br.com.condominio.service.CondominioService;
 import br.com.condominio.util.FacesMessages;
-import br.com.condomino.service.CondominioService;
 
 @Named
 @ViewScoped
