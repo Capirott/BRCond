@@ -103,4 +103,9 @@ public class ProprietarioController implements Serializable{
 	public void setProprietarioSelecionado(Proprietario proprietarioSelecionado) {
 		this.proprietarioSelecionado = proprietarioSelecionado;
 	}
+	
+	public List<Proprietario> completarCliente(String nome){
+		return proprietarioService.listarPorNome(nome);
+	}
+	
 }

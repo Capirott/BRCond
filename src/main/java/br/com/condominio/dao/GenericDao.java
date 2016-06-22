@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+
 import br.com.condominio.model.Entidade;
 
 public abstract class GenericDao implements Serializable{
@@ -36,7 +37,9 @@ public abstract class GenericDao implements Serializable{
 		bean = (T) consultar(bean.getClass(), bean.getId());
 		manager.remove(bean);
 	}
-	
-	
+
+	protected EntityManager getManager() {
+		return manager;
+	}	
 
 }

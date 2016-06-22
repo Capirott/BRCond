@@ -11,6 +11,7 @@
 
             <f:metadata>
                 <f:viewAction action="#{condominioController.consultar}" />
+<!--                 <f:viewAction action="#{proprietarioController.consultar}"/> -->
             </f:metadata>
 
             <h:form id="form">
@@ -83,16 +84,9 @@
                                 <p:inputMask mask="(99)9999-9999" id="telefone" value="#{condominioController.condominioEdicao.fone}" />
 
     								
-                                <p:outputLabel value="Proprietario" for="itemTip" />
-						        <p:autoComplete id="itemTip" value="#{autoCompleteView.proprietario3}" completeMethod="#{autoCompleteView.completeProprietario}"
-						                        var="proprietario" itemLabel="#{proprietario.nome}" itemValue="#{proprietario}" converter="proprietarioConverter" forceSelection="true">
-						            <f:facet name="itemtip">
-						                <h:panelGrid columns="1" cellpadding="15">
-						                    <h:outputText value="CNPJ:" />
-						                    <h:outputText value="#{proprietario.cnpj}" />
-						                </h:panelGrid>
-						            </f:facet>
-						        </p:autoComplete>							        
+                             	<p:outputLabel value ="Proprietario" for ="proprietario" /> 
+                             	<p:autoComplete id="proprietario" value="#{proprietario}" size="30"
+                            	completeMethod="#{proprietarioController.completarCliente}" var="c" itemLabel="#{c.nome}" itemValue="#{c}" forceSelection="true"/> 
 							
                             </p:panelGrid>
 						

@@ -89,6 +89,7 @@ public class CondominioController implements Serializable{
 	public void setCondominioEdicao(Condominio condominioEdicao) {
 		this.condominioEdicao = condominioEdicao;
 	}
+	
 
 	public Condominio getCondominioSelecionado() {
 		return condominioSelecionado;

@@ -9,11 +9,7 @@ import br.com.condominio.dao.ProprietarioDAO;
 import br.com.condominio.model.Proprietario;
 import br.com.condominio.util.Transacional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 
-@ManagedBean(name="proprietarioService", eager = true)
-@ApplicationScoped
 public class ProprietarioService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +25,11 @@ public class ProprietarioService implements Serializable {
 	public List<Proprietario> listarTodos(){
 		return proprietarioDAO.listar(Proprietario.class);
 	}
-
+	
+	public List<Proprietario> listarPorNome(String nome){
+		return proprietarioDAO.listarPorNome(nome);
+	}
+	
 	@Transacional
 	public void excluir(Proprietario proprietario){
 		proprietarioDAO.excluir(proprietario);
