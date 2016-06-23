@@ -103,4 +103,8 @@ public class InquilinoController implements Serializable{
 	public void setInquilinoSelecionado(Inquilino inquilinoSelecionado) {
 		this.inquilinoSelecionado = inquilinoSelecionado;
 	}
+	
+	public List<Inquilino> completarInquilino(String nome){
+		return inquilinoService.listAllByNome(nome);
+	}
 }

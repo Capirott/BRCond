@@ -41,11 +41,11 @@ public class Inquilino implements Entidade{
 	private TipoPessoaEnum tipoPessoa;
 	
 	@CPF
-	@Column(name = "in_cpf")
+	@Column(name = "in_cpf", unique = true)
 	private String cpf;
 	
 	@CNPJ
-	@Column(name = "in_cnpj")
+	@Column(name = "in_cnpj", unique = true)
 	private String cnpj;
 	
 	@NotEmpty

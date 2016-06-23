@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "APARTAMENTO")
@@ -23,50 +22,35 @@ public class Apartamento implements Entidade {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ap_codi")
 	private Long id;
-	
+
 	@NotNull
 	@Column(name = "ap_num")
 	private Long numero;
-	
+
 	@NotNull
 	@Column(name = "ap_andar")
 	private Long andar;
 
-	public Long getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Long numero) {
-		this.numero = numero;
-	}
-
-	public Inquilino getInquilino() {
-		return inquilino;
-	}
-
-	public void setInquilino(Inquilino inquilino) {
-		this.inquilino = inquilino;
-	}
 	@Column(name = "ap_observacoes")
 	private String observacoes;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "in_codi")
 	private Inquilino inquilino;
 
-	@NotEmpty
-	@ManyToOne(fetch = FetchType.LAZY)
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pr_codi")
 	private Proprietario proprietario;
 
-	@NotEmpty
-	@ManyToOne(fetch = FetchType.LAZY)
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cd_codi")
 	private Condominio condominio;
 
 	public Apartamento() {
 	}
-	
+
 	public Long getAndar() {
 		return andar;
 	}
@@ -82,7 +66,6 @@ public class Apartamento implements Entidade {
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
 	}
-
 
 	public Proprietario getProprietario() {
 		return proprietario;
@@ -100,9 +83,26 @@ public class Apartamento implements Entidade {
 		this.condominio = condominio;
 	}
 
+	public Long getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Long numero) {
+		this.numero = numero;
+	}
+
+	public Inquilino getInquilino() {
+		return inquilino;
+	}
+
+	public void setInquilino(Inquilino inquilino) {
+		this.inquilino = inquilino;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	@Override
 	public Long getId() {
 		return id;

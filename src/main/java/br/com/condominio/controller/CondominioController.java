@@ -98,4 +98,7 @@ public class CondominioController implements Serializable{
 	public void setCondominioSelecionado(Condominio condominioSelecionado) {
 		this.condominioSelecionado = condominioSelecionado;
 	}
+	public List<Condominio> completarCondominio(String nome){
+		return condominioService.listAllByNome(nome);
+	}
 }

@@ -29,4 +29,12 @@ public class InquilinoService implements Serializable {
 	public void excluir(Inquilino inquilino){
 		inquilinoDAO.excluir(inquilino);
 	}
+	
+	public Inquilino consultarPorId(Long id){
+		return inquilinoDAO.consultar(Inquilino.class, id);
+	}
+	
+	public List<Inquilino> listAllByNome(String nome){
+		return inquilinoDAO.listAllByNome(nome);
+	}
 }

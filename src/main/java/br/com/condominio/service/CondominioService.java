@@ -29,4 +29,12 @@ public class CondominioService implements Serializable {
 	public void excluir(Condominio condominio){
 		condominioDAO.excluir(condominio);
 	}
+	
+	public Condominio consultarPorId(Long id){
+		return condominioDAO.consultar(Condominio.class, id);
+	}
+	
+	public List<Condominio> listAllByNome(String nome){
+		return condominioDAO.listAllByNome(nome);
+	}
 }

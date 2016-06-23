@@ -43,12 +43,28 @@ public class Proprietario implements Entidade{
 	@Column(name = "pr_tipo", nullable = false)
 	private TipoPessoaEnum tipoPessoa;
 	
+	public Set<Condominio> getCondominios() {
+		return condominios;
+	}
+
+	public void setCondominios(Set<Condominio> condominios) {
+		this.condominios = condominios;
+	}
+
+	public Set<Apartamento> getApartamentos() {
+		return apartamentos;
+	}
+
+	public void setApartamentos(Set<Apartamento> apartamentos) {
+		this.apartamentos = apartamentos;
+	}
+
 	@CPF
-	@Column(name = "pr_cpf")
+	@Column(name = "pr_cpf", unique = true)
 	private String cpf;
 	
 	@CNPJ
-	@Column(name = "pr_cnpj")
+	@Column(name = "pr_cnpj", unique = true)
 	private String cnpj;
 	
 	@NotEmpty
