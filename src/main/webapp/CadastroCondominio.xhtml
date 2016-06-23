@@ -54,9 +54,13 @@
                     <p:column headerText="Nome/Razão Social" sortBy="#{condominio.nome}">
                         <h:outputText value="#{condominio.nome}"/>
                     </p:column>
-
-                    <p:column headerText="CNPJ" width="250">
+					
+                    <p:column headerText="CNPJ Cond" width="250">
                         <h:outputText value="#{condominio.cnpj}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Proprietario" sortBy="#{condominio.proprietario.nome}">
+                        <h:outputText value="#{condominio.proprietario.nome}"/>
                     </p:column>
                     
                 </p:dataTable>

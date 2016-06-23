@@ -2,6 +2,7 @@ package br.com.condominio.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,7 +19,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
-
 import br.com.condominio.enums.TipoPessoaEnum;
 
 @Entity
@@ -32,10 +32,10 @@ public class Proprietario implements Entidade{
 	@Column(name = "pr_codi")
 	private Long id;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	private Set<Condominio> condominios;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	private Set<Apartamento> apartamentos;
 	
 	@NotNull

@@ -2,6 +2,7 @@ package br.com.condominio.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -66,11 +67,11 @@ public class Condominio implements Entidade{
 	private String fone;	
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "pr_codi", nullable = false)
 	private Proprietario proprietario;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condominio")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "condominio", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	private Set<Apartamento> apartamentos;
 	
 	public Condominio() {}

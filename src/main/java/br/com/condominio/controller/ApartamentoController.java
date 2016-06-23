@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 
 import org.primefaces.context.RequestContext;
 import br.com.condominio.model.Apartamento;
@@ -15,46 +16,54 @@ import br.com.condominio.util.FacesMessages;
 
 @Named
 @ViewScoped
-public class ApartamentoController implements Serializable{
+public class ApartamentoController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private ApartamentoService apartamentoService;
-	
+
 	@Inject
 	private FacesMessages messages;
-	
+
 	private List<Apartamento> apartamentoList;
-	
+
 	private Apartamento apartamentoEdicao = new Apartamento();
-	
+
 	private Apartamento apartamentoSelecionado;
-	
-	public void consultar(){
+
+	public void consultar() {
 		apartamentoList = apartamentoService.listarTodos();
 	}
-	
-	public void preparaNovoApartamento(){
+
+	public void preparaNovoApartamento() {
 		apartamentoEdicao = new Apartamento();
 	}
-	
-	public void save(){
-		apartamentoService.save(apartamentoEdicao);
-		
-		consultar();
-		
-		messages.info("Apartamento salvo com sucesso!");
-		
-		RequestContext.getCurrentInstance().update(Arrays.asList("form:msgs", "form:apartamentos-table"));
+
+	public void save() {
+
+		try {
+			apartamentoService.save(apartamentoEdicao);
+
+			consultar();
+
+			messages.info("Apartamento salvo com sucesso!");
+
+			RequestContext.getCurrentInstance().update(Arrays.asList("form:msgs", "form:apartamentos-table"));
+		} catch (PersistenceException e) {
+			if (e.getCause().getMessage().contains("ConstraintViolation"))
+				messages.error("Apartamento não pode ser adicionado!");
+			else
+				throw e;
+		}
 	}
-	
-	public void excluir(){
+
+	public void excluir() {
 		apartamentoService.excluir(apartamentoSelecionado);
 		apartamentoSelecionado = null;
-		
+
 		consultar();
-		
+
 		messages.info("Apartamento excluido com sucesso!");
 	}
 

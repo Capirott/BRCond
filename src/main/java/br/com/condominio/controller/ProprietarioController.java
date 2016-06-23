@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 
 import org.primefaces.context.RequestContext;
 
@@ -17,50 +18,57 @@ import br.com.condominio.util.FacesMessages;
 
 @Named
 @ViewScoped
-public class ProprietarioController implements Serializable{
+public class ProprietarioController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private ProprietarioService proprietarioService;
-	
+
 	@Inject
 	private FacesMessages messages;
-	
+
 	private List<Proprietario> proprietarioList;
-	
+
 	private Proprietario proprietarioEdicao = new Proprietario(TipoPessoaEnum.PF);
-	
+
 	private Proprietario proprietarioSelecionado;
-	
-	public void consultar(){
+
+	public void consultar() {
 		proprietarioList = proprietarioService.listarTodos();
 	}
-	
-	public void preparaNovoProprietario(){
+
+	public void preparaNovoProprietario() {
 		proprietarioEdicao = new Proprietario(TipoPessoaEnum.PF);
 	}
-	
-	public void save(){
-		proprietarioService.save(proprietarioEdicao);
-		
-		consultar();
-		
-		messages.info("Proprietario salvo com sucesso!");
-		
-		RequestContext.getCurrentInstance().update(Arrays.asList("form:msgs", "form:proprietarios-table"));
+
+	public void save() {
+		try {
+			proprietarioService.save(proprietarioEdicao);
+
+			consultar();
+
+			messages.info("Proprietario salvo com sucesso!");
+
+			RequestContext.getCurrentInstance().update(Arrays.asList("form:msgs", "form:proprietarios-table"));
+		} catch (PersistenceException e) {
+			if (e.getCause().getMessage().contains("ConstraintViolation"))
+				messages.error("Proprietario não pode ser adicionado!");
+			else
+				throw e;
+		}
 	}
-	
-	public void excluir(){
+
+	public void excluir() {
 		proprietarioService.excluir(proprietarioSelecionado);
 		proprietarioSelecionado = null;
-		
+
 		consultar();
-		
+
 		messages.info("Proprietario excluido com sucesso!");
 	}
-	
-	public TipoPessoaEnum[] tiposPessoa(){
+
+	public TipoPessoaEnum[] tiposPessoa() {
 		return TipoPessoaEnum.values();
 	}
 
@@ -103,9 +111,9 @@ public class ProprietarioController implements Serializable{
 	public void setProprietarioSelecionado(Proprietario proprietarioSelecionado) {
 		this.proprietarioSelecionado = proprietarioSelecionado;
 	}
-	
-	public List<Proprietario> completarProprietario(String nome){
+
+	public List<Proprietario> completarProprietario(String nome) {
 		return proprietarioService.listAllByNome(nome);
 	}
-	
+
 }

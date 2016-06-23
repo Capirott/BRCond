@@ -1,5 +1,8 @@
 package br.com.condominio.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,8 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -31,9 +33,8 @@ public class Inquilino implements Entidade{
 	@Column(name = "in_codi")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ap_id")
-	private Apartamento apartamento;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "inquilino", cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Apartamento> apartamentos;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
